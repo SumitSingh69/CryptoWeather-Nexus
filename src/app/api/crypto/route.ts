@@ -6,7 +6,22 @@ export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
   const ids = searchParams.get("ids")?.split(",") || [];
 
+  console.log("Crypto API Request:", {
+    ids,
+  });
+
+  if (ids.length === 0) {
+    return NextResponse.json(
+      { error: "No cryptocurrency IDs provided" },
+      { status: 400 }
+    );
+  }
+
   try {
+    console.log(
+      "Fetching crypto data from:",
+      `${COINGECKO_API_URL}/coins/markets`
+    );
     const response = await fetch(
       `${COINGECKO_API_URL}/coins/markets?vs_currency=usd&ids=${ids.join(
         ","
@@ -14,10 +29,21 @@ export async function GET(request: Request) {
     );
 
     if (!response.ok) {
-      throw new Error("Failed to fetch crypto data");
+      const errorData = await response.json();
+      console.error("Crypto API error:", {
+        status: response.status,
+        statusText: response.statusText,
+        data: errorData,
+      });
+      throw new Error(
+        `Failed to fetch crypto data: ${
+          errorData.message || response.statusText
+        }`
+      );
     }
 
     const data = await response.json();
+    console.log("Crypto data fetched successfully:", data);
     return NextResponse.json(data);
   } catch (error) {
     console.error("Crypto API Error:", error);

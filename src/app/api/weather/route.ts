@@ -7,6 +7,14 @@ export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
   const cities = searchParams.get("cities")?.split(",") || [];
 
+  console.log("Weather API Request:", {
+    apiKey: OPENWEATHER_API_KEY ? "Present" : "Missing",
+    apiKeyValue: OPENWEATHER_API_KEY
+      ? `${OPENWEATHER_API_KEY.substring(0, 4)}...`
+      : "Missing",
+    cities,
+  });
+
   if (!OPENWEATHER_API_KEY) {
     console.error("OpenWeather API key is missing");
     return NextResponse.json(
@@ -22,21 +30,25 @@ export async function GET(request: Request) {
   try {
     console.log("Fetching weather for cities:", cities);
     const weatherPromises = cities.map(async (city) => {
-      const response = await fetch(
-        `${BASE_URL}/weather?q=${city}&appid=${OPENWEATHER_API_KEY}&units=metric`
-      );
+      const url = `${BASE_URL}/weather?q=${city}&appid=${OPENWEATHER_API_KEY}&units=metric`;
+      console.log(`Fetching weather for ${city} from:`, url);
+
+      const response = await fetch(url);
+      const data = await response.json();
 
       if (!response.ok) {
-        const errorData = await response.json();
-        console.error(`Weather API error for ${city}:`, errorData);
+        console.error(`Weather API error for ${city}:`, {
+          status: response.status,
+          statusText: response.statusText,
+          data: data,
+        });
         throw new Error(
           `Failed to fetch weather for ${city}: ${
-            errorData.message || response.statusText
+            data.message || response.statusText
           }`
         );
       }
 
-      const data = await response.json();
       return {
         city: data.name,
         temperature: Math.round(data.main.temp),
