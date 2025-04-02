@@ -1,36 +1,106 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# CryptoWeather Nexus
 
-## Getting Started
+A modern dashboard combining weather data, cryptocurrency information, and real-time notifications via WebSocket.
 
-First, run the development server:
+## Features
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+- Real-time weather data for multiple cities
+- Live cryptocurrency prices and market data
+- Crypto-related news feed
+- WebSocket integration for real-time price updates
+- Detailed views for both weather and cryptocurrency data
+- Responsive design with Tailwind CSS
+- State management with Redux Toolkit
+
+## Prerequisites
+
+- Node.js 18.x or later
+- npm or yarn
+- API keys for:
+  - OpenWeatherMap (https://openweathermap.org/api)
+  - NewsData.io (https://newsdata.io/)
+
+## Setup
+
+1. Clone the repository:
+
+   ```bash
+   git clone https://github.com/yourusername/crypto-weather-nexus.git
+   cd crypto-weather-nexus
+   ```
+
+2. Install dependencies:
+
+   ```bash
+   npm install
+   # or
+   yarn install
+   ```
+
+3. Create a `.env.local` file in the root directory and add your API keys:
+
+   ```
+   OPENWEATHER_API_KEY=your_openweather_api_key_here
+   NEWSDATA_API_KEY=your_newsdata_api_key_here
+   ```
+
+4. Start the development server:
+
+   ```bash
+   npm run dev
+   # or
+   yarn dev
+   ```
+
+5. Open [http://localhost:3000](http://localhost:3000) in your browser.
+
+## Project Structure
+
+```
+src/
+├── app/                    # Next.js app directory
+│   ├── api/               # API routes
+│   ├── dashboard/         # Dashboard page
+│   ├── weather/          # Weather pages
+│   └── crypto/           # Crypto pages
+├── components/           # React components
+│   ├── layout/          # Layout components
+│   ├── weather/         # Weather components
+│   ├── crypto/          # Crypto components
+│   └── news/            # News components
+├── store/               # Redux store
+│   ├── slices/         # Redux slices
+│   └── services/       # Redux services
+├── types/              # TypeScript types
+└── utils/              # Utility functions
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Technologies Used
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+- Next.js 13+ with App Router
+- React 18
+- Redux Toolkit
+- Tailwind CSS
+- TypeScript
+- Recharts
+- WebSocket
+- Axios
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## API Integrations
 
-## Learn More
+- OpenWeatherMap API for weather data
+- CoinGecko API for cryptocurrency data
+- NewsData.io for crypto-related news
+- CoinCap WebSocket for real-time price updates
 
-To learn more about Next.js, take a look at the following resources:
+## Contributing
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+1. Fork the repository
+2. Create your feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add some amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## License
 
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
