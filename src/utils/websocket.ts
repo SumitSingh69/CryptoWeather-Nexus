@@ -12,6 +12,7 @@ class WebSocketService {
 
   connect() {
     try {
+      // Using CoinCap's WebSocket API which doesn't require an API key
       this.ws = new WebSocket(
         "wss://ws.coincap.io/prices?assets=bitcoin,ethereum,cardano"
       );
@@ -23,20 +24,27 @@ class WebSocketService {
       };
 
       this.ws.onmessage = (event) => {
-        const data = JSON.parse(event.data);
-        Object.entries(data).forEach(([id, price]) => {
-          store.dispatch(updateCryptoPrice({ id, price: Number(price) }));
-        });
+        try {
+          const data = JSON.parse(event.data);
+          Object.entries(data).forEach(([id, price]) => {
+            store.dispatch(updateCryptoPrice({ id, price: Number(price) }));
+          });
+        } catch (error) {
+          console.error("Error processing WebSocket message:", error);
+        }
       };
 
-      this.ws.onclose = () => {
-        console.log("WebSocket disconnected");
+      this.ws.onclose = (event) => {
+        console.log("WebSocket disconnected:", event.code, event.reason);
         store.dispatch(updateWebSocketStatus(false));
         this.handleReconnect();
       };
 
-      this.ws.onerror = (error) => {
-        console.error("WebSocket error:", error);
+      this.ws.onerror = (event) => {
+        // Only log if there's actual error information
+        if (event instanceof ErrorEvent) {
+          console.error("WebSocket error:", event.message);
+        }
         store.dispatch(updateWebSocketStatus(false));
       };
     } catch (error) {

@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@/store/store";
 import { fetchCryptoData } from "@/store/slices/cryptoSlice";
 import CryptoSection from "@/components/crypto/CryptoSection";
+import { websocketService } from "@/utils/websocket";
 
 const DEFAULT_CRYPTOS = ["bitcoin", "ethereum", "cardano"];
 
@@ -16,6 +17,11 @@ export default function CryptoPage() {
 
   useEffect(() => {
     dispatch(fetchCryptoData(DEFAULT_CRYPTOS));
+    websocketService.connect();
+
+    return () => {
+      websocketService.disconnect();
+    };
   }, [dispatch]);
 
   return (

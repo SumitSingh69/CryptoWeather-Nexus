@@ -10,7 +10,7 @@ const inter = Inter({ subsets: ["latin"] });
 export const metadata: Metadata = {
   title: "CryptoWeather Nexus",
   description:
-    "A modern dashboard combining weather data and cryptocurrency information",
+    "A modern dashboard combining weather data and cryptocurrency information",//
 };
 
 export default function RootLayout({
