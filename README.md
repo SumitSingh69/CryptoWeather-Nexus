@@ -2,7 +2,7 @@
 
 A modern, real-time dashboard that combines global weather data, cryptocurrency prices, and crypto news in one elegant interface.
 
-![CryptoWeather Nexus](https://via.placeholder.com/1200x630/3b82f6/FFFFFF?text=CryptoWeather+Nexus)
+![CryptoWeather Nexus](crypto-weather-nexus-beryl.vercel.app)
 
 ## 📋 Overview
 
