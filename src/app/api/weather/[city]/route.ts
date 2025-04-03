@@ -1,13 +1,12 @@
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 
 const OPENWEATHER_API_KEY = process.env.OPENWEATHER_API_KEY;
 const BASE_URL = "https://api.openweathermap.org/data/2.5";
 
-export async function GET(
-  request: Request,
-  { params }: { params: { city: string } }
-) {
-  const city = params.city;
+// Next.js App Router API route handler
+/* eslint-disable @typescript-eslint/no-explicit-any */
+export async function GET(req: NextRequest, context: any) {
+  const city = context.params.city;
 
   if (!OPENWEATHER_API_KEY) {
     return NextResponse.json(

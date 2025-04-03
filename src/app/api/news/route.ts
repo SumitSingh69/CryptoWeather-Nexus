@@ -3,6 +3,16 @@ import { NextResponse } from "next/server";
 const NEWSDATA_API_KEY = process.env.NEWSDATA_API_KEY;
 const NEWSDATA_API_URL = "https://newsdata.io/api/1";
 
+// Define interface for NewsData API response item
+interface NewsDataItem {
+  article_id?: string;
+  title: string;
+  description?: string;
+  link: string;
+  pubDate: string;
+  source_id: string;
+}
+
 export async function GET() {
   console.log("News API Request:", {
     apiKey: NEWSDATA_API_KEY ? "Present" : "Missing",
@@ -37,7 +47,7 @@ export async function GET() {
     }
 
     // Transform the data to match our interface
-    const transformedNews = data.results.map((item: any) => ({
+    const transformedNews = data.results.map((item: NewsDataItem) => ({
       id: item.article_id || item.link,
       title: item.title,
       description: item.description || "",

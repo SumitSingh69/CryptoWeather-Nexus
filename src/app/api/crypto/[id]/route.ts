@@ -1,12 +1,11 @@
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 
 const COINGECKO_API_URL = "https://api.coingecko.com/api/v3";
 
-export async function GET(
-  request: Request,
-  { params }: { params: { id: string } }
-) {
-  const id = params.id;
+// Next.js App Router API route handler
+/* eslint-disable @typescript-eslint/no-explicit-any */
+export async function GET(req: NextRequest, context: any) {
+  const id = context.params.id;
 
   try {
     // Fetch current data
