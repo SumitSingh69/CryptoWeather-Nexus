@@ -14,31 +14,16 @@ interface NewsSectionProps {
   loading: boolean;
 }
 
-// Function to format the date in a more readable way
+// Format date to a more readable format
 const formatDate = (dateString: string) => {
   const date = new Date(dateString);
-  const now = new Date();
-  const diffTime = Math.abs(now.getTime() - date.getTime());
-  const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
-
-  if (diffDays === 0) {
-    const hours = Math.floor(diffTime / (1000 * 60 * 60));
-    if (hours === 0) {
-      const minutes = Math.floor(diffTime / (1000 * 60));
-      return `${minutes} minute${minutes !== 1 ? "s" : ""} ago`;
-    }
-    return `${hours} hour${hours !== 1 ? "s" : ""} ago`;
-  } else if (diffDays === 1) {
-    return "Yesterday";
-  } else if (diffDays < 7) {
-    return `${diffDays} day${diffDays !== 1 ? "s" : ""} ago`;
-  } else {
-    return date.toLocaleDateString("en-US", {
-      month: "short",
-      day: "numeric",
-      year: date.getFullYear() !== now.getFullYear() ? "numeric" : undefined,
-    });
-  }
+  return date.toLocaleDateString("en-US", {
+    year: "numeric",
+    month: "short",
+    day: "numeric",
+    hour: "2-digit",
+    minute: "2-digit",
+  });
 };
 
 export default function NewsSection({ data, loading }: NewsSectionProps) {
@@ -46,11 +31,11 @@ export default function NewsSection({ data, loading }: NewsSectionProps) {
     return (
       <div className="card">
         <div className="card-header">
-          <h2 className="section-title">Latest News</h2>
+          <h2 className="section-title">Latest Crypto News</h2>
         </div>
-        <div className="p-6 space-y-5">
-          {[1, 2, 3, 4, 5].map((i) => (
-            <div key={i} className="shimmer h-24 rounded-lg"></div>
+        <div className="p-6 space-y-4">
+          {[1, 2, 3].map((i) => (
+            <div key={i} className="shimmer h-32 rounded-lg"></div>
           ))}
         </div>
       </div>
@@ -61,11 +46,11 @@ export default function NewsSection({ data, loading }: NewsSectionProps) {
     return (
       <div className="card">
         <div className="card-header">
-          <h2 className="section-title">Latest News</h2>
+          <h2 className="section-title">Latest Crypto News</h2>
         </div>
         <div className="p-8 text-center opacity-60">
           <NewspaperIcon className="w-12 h-12 mx-auto mb-3 opacity-40" />
-          <p>No news data available. Please check your API configuration.</p>
+          <p>No crypto news available at the moment.</p>
         </div>
       </div>
     );
@@ -74,7 +59,7 @@ export default function NewsSection({ data, loading }: NewsSectionProps) {
   return (
     <div className="card">
       <div className="card-header">
-        <h2 className="section-title">Latest News</h2>
+        <h2 className="section-title">Latest Crypto News</h2>
       </div>
       <div className="divide-y divide-[var(--card-border)]">
         {data.map((item) => (
@@ -83,25 +68,17 @@ export default function NewsSection({ data, loading }: NewsSectionProps) {
             href={item.url}
             target="_blank"
             rel="noopener noreferrer"
-            className="news-card p-5 block hover:bg-[var(--input-bg)] transition-colors"
+            className="block p-5 hover:bg-[var(--input-bg)] transition-colors"
           >
-            <h3 className="news-title text-[var(--foreground)] hover:text-[var(--primary)] transition-colors">
+            <h3 className="font-semibold text-lg mb-2 line-clamp-2">
               {item.title}
             </h3>
-
-            {item.description && (
-              <p className="text-sm opacity-70 mt-2 line-clamp-2">
-                {item.description}
-              </p>
-            )}
-
-            <div className="flex items-center justify-between mt-3">
-              <span className="px-2 py-1 text-xs bg-[var(--input-bg)] rounded-full">
-                {item.source}
-              </span>
-              <span className="text-xs opacity-60">
-                {formatDate(item.publishedAt)}
-              </span>
+            <p className="text-sm opacity-80 mb-3 line-clamp-2">
+              {item.description}
+            </p>
+            <div className="flex items-center justify-between text-xs opacity-60">
+              <span>{item.source}</span>
+              <span>{formatDate(item.publishedAt)}</span>
             </div>
           </a>
         ))}

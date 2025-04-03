@@ -28,43 +28,59 @@ export async function GET() {
 
   try {
     console.log("Fetching crypto news...");
-    const url = `${NEWSDATA_API_URL}/news?apikey=${NEWSDATA_API_KEY}&q=cryptocurrency&language=en&size=5`;
+    const url = `${NEWSDATA_API_URL}/news?apikey=${NEWSDATA_API_KEY}&language=en&category=technology,business&q=cryptocurrency`;
     console.log("Fetching from:", url);
 
     const response = await fetch(url);
-    const data = await response.json();
 
     if (!response.ok) {
-      console.error("News API error:", data);
-      throw new Error(
-        `Failed to fetch news: ${data.message || response.statusText}`
-      );
+      throw new Error("Failed to fetch news");
     }
 
-    if (!data.results || !Array.isArray(data.results)) {
-      console.error("Invalid news data format:", data);
-      throw new Error("Invalid news data format received");
-    }
+    const data = await response.json();
+    console.log("Raw news data count:", data.results?.length || 0);
 
-    // Transform the data to match our interface
-    const transformedNews = data.results.map((item: NewsDataItem) => ({
-      id: item.article_id || item.link,
-      title: item.title,
-      description: item.description || "",
-      url: item.link,
-      publishedAt: item.pubDate,
-      source: item.source_id,
-    }));
+    // Filter for crypto-related news and limit to top 5
+    const cryptoKeywords = [
+      "crypto",
+      "bitcoin",
+      "ethereum",
+      "blockchain",
+      "cryptocurrency",
+      "defi",
+      "nft",
+      "web3",
+      "binance",
+      "coinbase",
+      "cryptocurrencies",
+    ];
 
-    console.log("News data fetched successfully:", transformedNews);
-    return NextResponse.json(transformedNews);
+    const filteredNews = data.results
+      .filter((article: any) => {
+        const title = article.title.toLowerCase();
+        const description = article.description?.toLowerCase() || "";
+        const isCryptoRelated = cryptoKeywords.some(
+          (keyword) => title.includes(keyword) || description.includes(keyword)
+        );
+        console.log("Article:", title, "Crypto related:", isCryptoRelated);
+        return isCryptoRelated;
+      })
+      .slice(0, 5)
+      .map((article: any) => ({
+        id: article.article_id,
+        title: article.title,
+        description: article.description,
+        url: article.link,
+        publishedAt: article.pubDate,
+        source: article.source_id,
+      }));
+
+    console.log("Filtered news count:", filteredNews.length);
+    return NextResponse.json(filteredNews);
   } catch (error) {
-    console.error("News API Error:", error);
+    console.error("Error fetching news:", error);
     return NextResponse.json(
-      {
-        error:
-          error instanceof Error ? error.message : "Failed to fetch news data",
-      },
+      { error: "Failed to fetch news" },
       { status: 500 }
     );
   }
