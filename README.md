@@ -2,8 +2,6 @@
 
 A modern, real-time dashboard that combines global weather data, cryptocurrency prices, and crypto news in one elegant interface.
 
-![CryptoWeather Nexus](crypto-weather-nexus-beryl.vercel.app)
-
 ## 📋 Overview
 
 CryptoWeather Nexus is a comprehensive dashboard application that provides users with real-time weather information, cryptocurrency prices with WebSocket updates, and the latest crypto news. The application features a sleek, professional design with a focus on usability and real-time data visualization.
